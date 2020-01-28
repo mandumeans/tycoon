@@ -2,26 +2,64 @@ import React from 'react';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 import Board from './Board'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-class BoardMaker extends React.Component {
-
+class BoardModal extends React.Component {
     constructor(props) {
         super(props);
+        this.textInput = React.createRef();
+    }
+
+    onModalShow = () => {
+        this.textInput.current.focus();
+    };
+
+    render(){
+        return(
+            <Modal show={this.props.isModalShow} onShow={this.onModalShow} onHide={this.props.handleModalClose}>
+                <Modal.Header closeButton>
+                <Modal.Title>Create a new Board</Modal.Title>
+                </Modal.Header>
+                <Modal.Body><Form.Control type="text" ref={this.textInput} placeholder="Enter Board Name" /></Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={this.props.handleModalClose}>
+                    Close
+                </Button>
+                <Button variant="primary" onClick={this.props.handleModalClose}>
+                    Save Changes
+                </Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
+}
+
+
+class BoardMaker extends React.Component {
+
+    constructor(props){
+        super(props);
         this.state = {
-            createModalShow: false
+            isModalShow: false
         }
+        this.boardModal = React.createRef();
+    }
+
+    handleModalShow = () => {
+        this.setState({
+            isModalShow: true
+        });
+    };
+
+    handleModalClose = () => {
+        this.setState({
+            isModalShow: false
+        });
     }
 
     render(){
-        const handleShow = () => this.setState({
-            createModalShow: true
-        });
-        const handleClose = () => this.setState({
-            createModalShow: false
-        });
-        
         return (
             <div className="global-container">
                 <div className="global-buttons">
@@ -31,26 +69,12 @@ class BoardMaker extends React.Component {
                 </div>
                 <div className="board-maker-buttons">
                     <ButtonToolbar>
-                        <Button variant="outline-primary" onClick={handleShow}>Create a new board...</Button>
+                        <Button variant="outline-primary" onClick={this.handleModalShow}>Create a new board...</Button>
                     </ButtonToolbar>
                 </div>
-                <Modal show={this.state.createModalShow} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
-                    </Modal.Footer>
-                </Modal>
+                <BoardModal isModalShow={this.state.isModalShow} handleModalClose={this.handleModalClose} />
             </div>
         );
-
     }
 
 }
