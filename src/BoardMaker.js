@@ -71,7 +71,9 @@ class BoardMaker extends React.Component {
 
     addBoardList = (boardName) => {
         alert(this.state.boardList);
-        this.boardList.push(boardName);
+        this.boardList.push(
+            <Button variant="outline-default">boardName</Button>
+            );
         this.handleModalClose();
     }
 
@@ -89,7 +91,7 @@ class BoardMaker extends React.Component {
                     </ButtonToolbar>
                 </div>
                 <BoardModal isModalShow={this.state.isModalShow} handleModalClose={this.handleModalClose} addBoardList={this.addBoardList} />
-                {this.boardList.join(",")}
+                {this.boardList}
             </div>
         );
     }
