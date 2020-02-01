@@ -19,4 +19,10 @@ body {
     margin: 20px;
   }
 
-  
+  .board-buttons {
+    margin: 20px;
+  }
+
+  .btnBoard {
+    margin-left: 10px;
+  }

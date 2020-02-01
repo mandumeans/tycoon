@@ -1,50 +1,8 @@
 import React from 'react';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import Board from './Board'; 
+import BoardMakerModal from './BoardMakerModal'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-class BoardModal extends React.Component {
-    constructor(props) {
-        super(props);
-        this.textInput = React.createRef();
-        this.state = {
-            textInput: ""
-        };
-    }
-
-    onModalShow = () => {
-        this.textInput.current.focus();
-    };
-
-    handleChange = (e) => {
-        this.setState({
-            textInput: e.target.value
-        })
-    }
-    
-    render(){
-        return(
-            <Modal show={this.props.isModalShow} onShow={this.onModalShow} onHide={this.props.handleModalClose}>
-                <Modal.Header closeButton>
-                <Modal.Title>Create a new Board</Modal.Title>
-                </Modal.Header>
-                <Modal.Body><Form.Control type="text" ref={this.textInput} onChange={this.handleChange} placeholder="Enter Board Name" /></Modal.Body>
-                <Modal.Footer>
-                <Button variant="secondary" onClick={this.props.handleModalClose}>
-                    Close
-                </Button>
-                <Button variant="primary" onClick={() => this.props.addBoardList(this.state.textInput) }>
-                    Save Changes
-                </Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
-}
-
 
 class BoardMaker extends React.Component {
 
@@ -70,11 +28,14 @@ class BoardMaker extends React.Component {
     }
 
     addBoardList = (boardName) => {
-        alert(this.state.boardList);
-        this.boardList.push(
-            <Button variant="outline-default">boardName</Button>
-            );
+        this.boardList.push(boardName);
         this.handleModalClose();
+    }
+
+    renderAllBoards = () => {
+        return this.boardList.map(boardName => {
+            return <Button className="btnBoard" variant="secondary">{boardName}</Button>
+        });
     }
 
     render(){
@@ -90,11 +51,12 @@ class BoardMaker extends React.Component {
                         <Button variant="outline-primary" onClick={this.handleModalShow}>Create a new board...</Button>
                     </ButtonToolbar>
                 </div>
-                <BoardModal isModalShow={this.state.isModalShow} handleModalClose={this.handleModalClose} addBoardList={this.addBoardList} />
-                {this.boardList}
+                <div className="board-buttons">
+                    <BoardMakerModal isModalShow={this.state.isModalShow} handleModalClose={this.handleModalClose} addBoardList={this.addBoardList} />
+                    {this.renderAllBoards()}
+                </div>
             </div>
         );
     }
-
 }
 export default BoardMaker;
