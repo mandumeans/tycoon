@@ -3,6 +3,7 @@ import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 import Button from 'react-bootstrap/Button';
 import BoardMakerModal from './BoardMakerModal'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 class BoardMaker extends React.Component {
 
@@ -34,7 +35,7 @@ class BoardMaker extends React.Component {
 
     renderAllBoards = () => {
         return this.boardList.map(boardName => {
-            return <Button className="btnBoard" variant="secondary">{boardName}</Button>
+            return <Link to={"read/" + boardName}><Button className="btnBoard" variant="secondary">{boardName}</Button></Link>
         });
     }
 
