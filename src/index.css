@@ -26,3 +26,10 @@ body {
   .btnBoard {
     margin-left: 10px;
   }
+
+  .board-default {
+    border: 1px solid;
+    padding: 15px;
+    margin-right: 20px;
+    height: 80%;
+  }
