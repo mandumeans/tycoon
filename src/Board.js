@@ -7,10 +7,14 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 class Board extends React.Component {
 
+    state = {
+        textInput: ''
+    }
+
     constructor(props){
         super(props);
         this.setState({
-            laneName: "",
+            textInput: ""
         });
         this.laneList = [];
     }
@@ -20,43 +24,42 @@ class Board extends React.Component {
         return <h3>{id} 게시판</h3>;
     }
 
-    setName = (value) => {
-        this.setState({
-            laneName: value,
-        });
-    };
-
-    _handleKeyDown = (e, callback) => {
-      if (e.key === 'Enter') {
-        callback();
-      }
-    };
-
-    _onChange = (e, callback) => {
-        callback();
-    };
-
     renderLaneList = () => {
         return this.laneList.map(laneName => {
-            return (                
+            return (
                 <div className="board-default boardMakeItem"> 
-                    {laneName}
+                    <List laneName={laneName}/>
                 </div>
             );
         });
-    } 
+    }
 
+    handleKeyDown = (e, callback) => {
+        if (e.key === 'Enter') {
+            this.laneList.push(this.state.textInput); 
+            this.setState({
+                textInput: ""
+            });
+        }
+    };
+      
+    handleChange = (e) => {
+          this.setState({
+              textInput: e.target.value
+          })
+    }
 
     render(){
         return (
             <div>
                 <this.renderTopic />
                 <ListGroup horizontal>
-                    <div>
-                        {this.renderLaneList()}
-                    </div>
+                    {this.renderLaneList()}
                     <div className="board-default boardMakeItem">
-                        <Form.Control type="text" placeholder="Enter List Name" onChange={e => this.setName(e, () => this.setState({laneName:e.target.value}))} onKeyDown={e => this._handleKeyDown(e, () => this.laneList.push(e.target.value))} />
+                        <Form.Control type="text" placeholder="Enter List Name"
+                            value={this.state.textInput}
+                            onChange={this.handleChange} 
+                            onKeyPress={this.handleKeyDown} />
                     </div>
                 </ListGroup>
             </div>
