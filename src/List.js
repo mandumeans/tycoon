@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 import { useDrag } from 'react-dnd'
+import Item from './item'; 
 
 class List extends React.Component {
     
@@ -22,7 +23,7 @@ class List extends React.Component {
         const taskList = this.taskList.map(taskName => {
             return (
                 <li>
-                    {taskName}
+                    <Item taskName={taskName}></Item>
                 </li>
             );
         });
