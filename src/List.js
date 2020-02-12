@@ -1,8 +1,5 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import { DndProvider } from 'react-dnd'
-import Backend from 'react-dnd-html5-backend'
-import { useDrag } from 'react-dnd'
 import Item from './item'; 
 
 class List extends React.Component {
@@ -20,18 +17,36 @@ class List extends React.Component {
     }
 
     renderTaskList = () => {
+        const moveCard = useCallback(
+          (dragIndex, hoverIndex) => {
+            const dragCard = cards[dragIndex]
+            setCards(
+              update(cards, {
+                $splice: [
+                  [dragIndex, 1],
+                  [hoverIndex, 0, dragCard],
+                ],
+              }),
+            )
+          },
+          [cards],
+        )
         const taskList = this.taskList.map(taskName => {
             return (
                 <li>
-                    <Item taskName={taskName}></Item>
+                    <Item                     
+                        key={1}
+                        index={1}
+                        id={2}
+                        text={taskName}
+                        moveCard={moveCard}
+                    ></Item>
                 </li>
             );
         });
         return (
             <ul>
-                <DndProvider backend={Backend}>
-                    {taskList} 
-                </DndProvider>
+                {taskList}
             </ul>
         )
     }
