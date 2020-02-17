@@ -5,6 +5,7 @@ import BoardMaker from './BoardMaker';
 import Board from './Board'; 
 import './index.css';
 import Backend from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
 
 ReactDOM.render(
     <Router>

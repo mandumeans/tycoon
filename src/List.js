@@ -1,45 +1,28 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import Item from './item'; 
+import Item from './item';
+import update from 'immutability-helper'
 
 class List extends React.Component {
     
-    state = {
-        textInput: ''
-    }
-    
     constructor(props){
         super(props);
-        this.setState({
-            textInput: ""
-        });
-        this.taskList = [];
+        this.state = {
+            textInput: '',
+            taskList: [], 
+            idVal : 0
+        };
     }
 
     renderTaskList = () => {
-        const moveCard = useCallback(
-          (dragIndex, hoverIndex) => {
-            const dragCard = cards[dragIndex]
-            setCards(
-              update(cards, {
-                $splice: [
-                  [dragIndex, 1],
-                  [hoverIndex, 0, dragCard],
-                ],
-              }),
-            )
-          },
-          [cards],
-        )
-        const taskList = this.taskList.map(taskName => {
+        const taskList = this.state.taskList.map((task) => {
             return (
                 <li>
-                    <Item                     
-                        key={1}
-                        index={1}
-                        id={2}
-                        text={taskName}
-                        moveCard={moveCard}
+                    <Item          
+                        id={task.id}
+                        index={task.id}
+                        text={task.taskName}
+                        moveCard={this.moveCard}
                     ></Item>
                 </li>
             );
@@ -53,17 +36,32 @@ class List extends React.Component {
 
     handleKeyDown = (e, callback) => {
         if (e.key === 'Enter') {
-            this.taskList.push(this.state.textInput); 
+            this.state.taskList.push({id:this.state.idVal, taskName: this.state.textInput}); 
             this.setState({
+                idVal: this.state.idVal + 1,
                 textInput: ""
             });
         }
     };
       
     handleChange = (e) => {
-          this.setState({
-              textInput: e.target.value
-          })
+        this.setState({
+            textInput: e.target.value
+        })
+    }
+
+    moveCard = (dragIndex, hoverIndex) => {
+        console.log(dragIndex + "," + hoverIndex);
+        const dragCard = this.state.taskList[dragIndex];
+        
+        this.setState({
+            taskList : update(
+                this.state.list, 
+                {
+                    $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard],]
+                }
+            )
+        });
     }
 
     render(){
