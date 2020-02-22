@@ -4,29 +4,6 @@ import { useDrag, useDrop } from 'react-dnd'
 const ItemTypes = {
     CARD: 'card'
 }
-/*
-class Item extends React.Component {
-    
-    render(){
-        const ref = useRef(null)
-        const text = this.props.taskName;
-        const [{ isDragging }, drag] = useDrag({
-          item: { type: ItemTypes.CARD, id, index },
-          collect: monitor => ({
-            isDragging: monitor.isDragging(),
-          }),
-        })
-        const opacity = isDragging ? 0 : 1
-        drag(drop(ref))
-        return(
-            <div ref={dragRef} style={{ opacity }}>
-                {text}
-            </div>
-        )
-    }
-}
-*/
-
 
 const Item = ({ id, index, text, moveCard }) => {
   const ref = useRef(null)
@@ -38,19 +15,14 @@ const Item = ({ id, index, text, moveCard }) => {
       }
       const dragIndex = item.index
       const hoverIndex = index
-      // Don't replace items with themselves
-      if (dragIndex === hoverIndex) {
+      
+      if (dragIndex === hoverIndex) { // 현재 인덱스와 옮기려는 인덱스가 같으면 옮기지 않는다.
         return
       }
-      // Determine rectangle on screen
-      const hoverBoundingRect = ref.current.getBoundingClientRect()
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
+      const hoverBoundingRect = ref.current.getBoundingClientRect() // 현재 div에 사각형을 가져와
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2 //Y축 중앙을 구했음 
+      const clientOffset = monitor.getClientOffset() // 마우스 위치
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top // Y축 최상단을 구함
       // Only perform the move when the mouse has crossed half of the items height
       // When dragging downwards, only move when the cursor is below 50%
       // When dragging upwards, only move when the cursor is above 50%
@@ -77,10 +49,19 @@ const Item = ({ id, index, text, moveCard }) => {
       isDragging: monitor.isDragging(),
     }),
   })
-  const opacity = isDragging ? 0 : 1
+  const opacity = isDragging ? 0.3 : 1
+  
+  const style = {
+    border: '1px dashed gray',
+    padding: '0.5rem 1rem',
+    marginBottom: '.5rem',
+    backgroundColor: 'white',
+    cursor: 'move',
+  }
+
   drag(drop(ref))
   return (
-    <div ref={ref} style={{opacity }}>
+    <div ref={ref} style={{...style, opacity }}>
       {text}
     </div>
   )

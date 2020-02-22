@@ -4,7 +4,13 @@ body {
   }
   
   ol, ul {
-    padding-left: 30px;
+    /* padding-left: 30px; */
+  }
+
+  ul.taskList {
+    list-style: none;
+    padding-left: 0px;
+    padding-top: 10px;
   }
   
   .global-container {

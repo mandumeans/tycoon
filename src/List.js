@@ -15,22 +15,20 @@ class List extends React.Component {
     }
 
     renderTaskList = () => {
-        const taskList = this.state.taskList.map((task) => {
+        const taskList = this.state.taskList.map((task, index) => {
             return (
-                <li>
                     <Item          
                         id={task.id}
-                        index={task.id}
+                        index={index}
                         text={task.taskName}
                         moveCard={this.moveCard}
                     ></Item>
-                </li>
             );
         });
         return (
-            <ul>
-                {taskList}
-            </ul>
+            <div>
+            {taskList}
+            </div>
         )
     }
 
@@ -51,16 +49,22 @@ class List extends React.Component {
     }
 
     moveCard = (dragIndex, hoverIndex) => {
-        console.log(dragIndex + "," + hoverIndex);
         const dragCard = this.state.taskList[dragIndex];
         
         this.setState({
             taskList : update(
-                this.state.list, 
+                this.state.taskList, 
                 {
-                    $splice: [[dragIndex, 1], [hoverIndex, 0, dragCard],]
+                    $splice: [
+                              [dragIndex, 1],           //dragIndex에 있는 1개를 삭제
+                              [hoverIndex, 0, dragCard],//hoverIndex앞에 dragCard를 삽입
+                            ]
                 }
             )
+        });
+        console.log("-----------------");
+        this.state.taskList.map((task)=>{
+            console.log(task.taskName);
         });
     }
 
